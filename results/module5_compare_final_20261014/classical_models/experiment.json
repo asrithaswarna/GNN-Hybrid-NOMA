@@ -1,0 +1,25 @@
+{
+  "data_source": "synthetic",
+  "dataset_path": "",
+  "task": "user rate regression",
+  "train_scenarios": 174,
+  "validation_scenarios": 58,
+  "test_scenarios": 58,
+  "seed": 42,
+  "module5_evaluation": {
+    "status": "completed",
+    "cv_strategy": "GroupKFold",
+    "folds": 5,
+    "training_scenarios": 174,
+    "selected_model": "Random Forest",
+    "best_params": {
+      "model__n_estimators": 25,
+      "model__min_samples_split": 2,
+      "model__min_samples_leaf": 1,
+      "model__max_depth": 16
+    },
+    "best_cv_mae_mbps": 0.02251148649563771,
+    "test_metrics_file": "model_selection_test_metrics.csv",
+    "bootstrap_file": "paired_bootstrap_comparison.csv"
+  }
+}

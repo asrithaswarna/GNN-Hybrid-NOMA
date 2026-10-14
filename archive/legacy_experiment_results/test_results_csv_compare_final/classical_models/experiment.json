@@ -1,0 +1,9 @@
+{
+  "data_source": "csv",
+  "dataset_path": "data\\example_users.csv",
+  "task": "user rate regression",
+  "train_scenarios": 1,
+  "validation_scenarios": 1,
+  "test_scenarios": 1,
+  "seed": 42
+}

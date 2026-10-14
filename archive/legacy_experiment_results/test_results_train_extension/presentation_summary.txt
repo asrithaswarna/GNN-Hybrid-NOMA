@@ -1,0 +1,64 @@
+====================================================
+HYBRID NOMA NETWORK SIMULATION
+Project: GNN-Based User Pairing and Slot Assignment
+
+NETWORK DETAILS
+Number of users       : 4
+Number of slots       : 2
+Training epochs       : 1
+Random seed           : 42
+
+STEP 1: PREPARING NETWORK DATA
+Training examples     : 200
+Validation examples   : 40
+
+STEP 2: TRAINING THE GNN MODEL
+The model learns from simulated wireless network data.
+Epoch 1/1: train 1.1190, validation 1.2164
+Best validation error : 1.2164
+Training completed.
+
+FINAL USER PAIRING (ONE GENERATED GNN SCHEDULE)
+Pair 1: U1 and U3
+Assigned slot         : Slot 1
+Method                : PD-NOMA
+Pair data rate        : 4.69 Mbps
+
+Pair 2: U0 and U2
+Assigned slot         : Slot 2
+Method                : PD-NOMA
+Pair data rate        : 0.47 Mbps
+
+PERFORMANCE COMPARISON
+Method                      Total Rate   Avg User Rate   Fairness
+------------------------------------------------------------------
+OMA                           20.91 Mbps      5.23 Mbps      0.357
+Random Pairing                18.32 Mbps      4.58 Mbps      0.634
+Near-Far Pairing              18.59 Mbps      4.65 Mbps      0.648
+Greedy Pairing                18.40 Mbps      4.60 Mbps      0.609
+Optimization Reference        19.04 Mbps      4.76 Mbps      0.630
+GNN-Based Pairing             18.40 Mbps      4.60 Mbps      0.609
+
+SCMA PERFORMANCE SUMMARY
+   SNR        BER        SER      Data Rate
+  -5 dB     0.4342     0.6400       3.95 Mbps
+   0 dB     0.3717     0.5433       9.56 Mbps
+   5 dB     0.2942     0.4200      18.06 Mbps
+  10 dB     0.1625     0.2450      26.24 Mbps
+  15 dB     0.0417     0.0600      31.39 Mbps
+  20 dB     0.0033     0.0050      33.75 Mbps
+As signal quality increases, error rates should generally decrease in this simulation.
+
+FINAL SUMMARY
+The GNN was trained using simulated wireless network data.
+The model was used to predict user pairing information.
+The following GNN metrics are averages over the benchmark test set:
+GNN benchmark total data rate      : 18.40 Mbps
+Reference benchmark total rate     : 19.04 Mbps
+SCMA evaluation: Completed separately
+Important limitation: GNN slot predictions are trained but final evaluation assigns pairs sequentially to available slots.
+GNN benchmark average user rate   : 4.60 Mbps
+GNN benchmark fairness            : 0.609
+GNN benchmark outage              : 3.50%
+Results and graphs were saved in the output folder.
+====================================================

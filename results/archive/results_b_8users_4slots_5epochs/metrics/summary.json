@@ -1,0 +1,94 @@
+{
+    "config": {
+        "num_users": 8,
+        "num_slots": 4,
+        "epochs": 5,
+        "seed": 42
+    },
+    "benchmark_summary": {
+        "Orthogonal Multiple Access (OMA)": {
+            "method_name": "Orthogonal Multiple Access (OMA)",
+            "sum_rate_mean_mbps": 16.650903947669182,
+            "sum_rate_std_mbps": 9.395230309595139,
+            "user_rate_mean_mbps": 2.0813629934586477,
+            "user_rate_std_mbps": 1.1744037886993923,
+            "min_user_rate_mean_mbps": 0.0,
+            "jains_fairness_mean": 0.3153676951641202,
+            "jains_fairness_std": 0.06594306761665873,
+            "outage_probability_mean": 0.51,
+            "slot_utilization_mean": 100.0,
+            "inference_time_ms": 0.08182400015357416,
+            "validity_rate": 100.0
+        },
+        "Random Pairing PD-NOMA": {
+            "method_name": "Random Pairing PD-NOMA",
+            "sum_rate_mean_mbps": 17.449828761375304,
+            "sum_rate_std_mbps": 7.45206602463025,
+            "user_rate_mean_mbps": 2.181228595171913,
+            "user_rate_std_mbps": 0.9315082530787813,
+            "min_user_rate_mean_mbps": 0.2667107597048269,
+            "jains_fairness_mean": 0.5521634608715348,
+            "jains_fairness_std": 0.13951916666307965,
+            "outage_probability_mean": 0.035,
+            "slot_utilization_mean": 100.0,
+            "inference_time_ms": 0.3486280002107378,
+            "validity_rate": 100.0
+        },
+        "Near-Far Channel Gain NOMA": {
+            "method_name": "Near-Far Channel Gain NOMA",
+            "sum_rate_mean_mbps": 17.42368689338891,
+            "sum_rate_std_mbps": 7.645878047500596,
+            "user_rate_mean_mbps": 2.177960861673614,
+            "user_rate_std_mbps": 0.9557347559375745,
+            "min_user_rate_mean_mbps": 0.3100660631752272,
+            "jains_fairness_mean": 0.5619196913165881,
+            "jains_fairness_std": 0.1530227030566263,
+            "outage_probability_mean": 0.035,
+            "slot_utilization_mean": 100.0,
+            "inference_time_ms": 0.15859799983445555,
+            "validity_rate": 100.0
+        },
+        "Greedy Sum-Rate NOMA": {
+            "method_name": "Greedy Sum-Rate NOMA",
+            "sum_rate_mean_mbps": 16.955956924195753,
+            "sum_rate_std_mbps": 6.337537594180223,
+            "user_rate_mean_mbps": 2.119494615524469,
+            "user_rate_std_mbps": 0.7921921992725279,
+            "min_user_rate_mean_mbps": 0.1995156655377857,
+            "jains_fairness_mean": 0.5274377398350376,
+            "jains_fairness_std": 0.11702734720560597,
+            "outage_probability_mean": 0.0525,
+            "slot_utilization_mean": 100.0,
+            "inference_time_ms": 0.3609720001986716,
+            "validity_rate": 100.0
+        },
+        "Optimization Oracle": {
+            "method_name": "Optimization Oracle",
+            "sum_rate_mean_mbps": 18.054260628336458,
+            "sum_rate_std_mbps": 7.432221420352027,
+            "user_rate_mean_mbps": 2.256782578542057,
+            "user_rate_std_mbps": 0.9290276775440034,
+            "min_user_rate_mean_mbps": 0.21084562937171702,
+            "jains_fairness_mean": 0.5480321167511846,
+            "jains_fairness_std": 0.11529860097004059,
+            "outage_probability_mean": 0.0525,
+            "slot_utilization_mean": 100.0,
+            "inference_time_ms": 10.93951599970751,
+            "validity_rate": 100.0
+        },
+        "Proposed GNN-Based NOMA": {
+            "method_name": "Proposed GNN-Based NOMA",
+            "sum_rate_mean_mbps": 17.322609070458977,
+            "sum_rate_std_mbps": 6.7219481522022955,
+            "user_rate_mean_mbps": 2.165326133807372,
+            "user_rate_std_mbps": 0.8402435190252869,
+            "min_user_rate_mean_mbps": 0.2001097123965558,
+            "jains_fairness_mean": 0.5351063732445114,
+            "jains_fairness_std": 0.11884724090457585,
+            "outage_probability_mean": 0.0525,
+            "slot_utilization_mean": 100.0,
+            "inference_time_ms": 7.7031520001764875,
+            "validity_rate": 100.0
+        }
+    }
+}

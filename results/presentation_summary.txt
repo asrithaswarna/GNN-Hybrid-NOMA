@@ -1,0 +1,120 @@
+====================================================
+GNN-BASED HYBRID NOMA NETWORK
+NETWORK SETUP
+
+Users : 10
+Slots : 5
+Data Source : synthetic
+Train / Val / Test : 200 / 40 / 50
+
+
+1. DATA PREPARATION
+
+Features used : x, y, distance, channel_gain, channel_gain_db, snr_db, min_rate_req_bps
+Preprocessing : Feature pipeline + StandardScaler
+Data preparation : Completed
+
+
+1. ML MODEL RESULTS
+
+MODEL PERFORMANCE
+Linear Regression R2 = 0.8761
+Random Forest R2 = 0.9999
+
+MODULE 5 MODEL EVALUATION
+Cross-validation : GroupKFold (5 folds; training scenarios only)
+CV metrics (mean +/- std): MAE and RMSE in Mbps; R2 unitless
+  Linear Regression: MAE=0.9243 +/- 0.0222; RMSE=1.5939 +/- 0.5430; R2=0.8089 +/- 0.1601
+  Ridge Regression: MAE=0.9243 +/- 0.0222; RMSE=1.5938 +/- 0.5427; R2=0.8090 +/- 0.1600
+  Lasso Regression: MAE=0.9236 +/- 0.0232; RMSE=1.5891 +/- 0.5291; R2=0.8110 +/- 0.1551
+  Decision Tree: MAE=0.0650 +/- 0.0042; RMSE=0.1177 +/- 0.0528; R2=0.9989 +/- 0.0011
+  Random Forest: MAE=0.0160 +/- 0.0075; RMSE=0.0958 +/- 0.0966; R2=0.9989 +/- 0.0016
+Selected model : Random Forest
+Selected model best parameters : n_estimators=25, min_samples_split=2, min_samples_leaf=1, max_depth=16
+Configurations tested : 4
+Best CV score (negative MAE) : -0.0142
+Selected model best CV MAE : 0.0142 Mbps
+Held-out test metrics:
+  Linear Regression (bootstrap baseline): MAE=0.9557 Mbps, RMSE=1.3670 Mbps, R2=0.8761
+  Random Forest (selected model): MAE=0.0082 Mbps, RMSE=0.0316 Mbps, R2=0.9999
+Paired bootstrap (MAE_baseline - MAE_selected): 0.9474 Mbps
+95% CI: [0.8623, 1.0329] Mbps; includes zero: False (2000 repetitions, 50 independent scenarios)
+GNN Rate = 17.69 Mbps
+
+GNN TRAINING
+Epochs completed : 25
+Stopping : configured epoch limit (no early stopping)
+Best Validation Loss : 1.5596
+Best Validation Epoch : 10
+Test Performance : 17.69 Mbps total rate | 1.77 Mbps average user rate
+
+
+1. GNN USER PAIRING
+
+PAIR USERS SLOT METHOD
+1. U3 and U6 -> S5 -> SCMA
+2. U1 and U2 -> S4 -> PD-NOMA
+3. U0 and U8 -> S3 -> PD-NOMA
+4. U5 and U7 -> S1 -> PD-NOMA
+5. U4 and U9 -> S2 -> PD-NOMA
+Slot occupancy : S1: U5 and U7 | S2: U4 and U9 | S3: U0 and U8 | S4: U1 and U2 | S5: U3 and U6
+Capacity rule : at most one allocation per slot; unused slots remain idle.
+
+Pairing source : GNN
+Slot assignment : GNN slot prediction with deterministic capacity-aware resolution
+
+
+1. COMMUNICATION PERFORMANCE
+
+PAIRING / RESOURCE ALLOCATION
+
+Method            Rate      Fairness  Outage
+OMA                19.49 Mbps    0.335   50.40%
+Random Pairing     16.18 Mbps    0.525    4.00%
+Near-Far Pairing   16.29 Mbps    0.508    2.20%
+Greedy Pairing     16.75 Mbps    0.505   11.00%
+Optimization Reference   17.59 Mbps    0.523    6.40%
+GNN Pairing        17.69 Mbps    0.529   10.00%
+
+PD-NOMA
+Average Pair Rate : 2.53 Mbps
+SIC : Enabled
+
+
+SCMA PERFORMANCE
+
+SNR     BER      SER      Data Rate
+  -5 dB   0.4342   0.6400     3.95 Mbps
+   0 dB   0.3717   0.5433     9.56 Mbps
+   5 dB   0.2942   0.4200    18.06 Mbps
+  10 dB   0.1625   0.2450    26.24 Mbps
+  15 dB   0.0417   0.0600    31.39 Mbps
+  20 dB   0.0033   0.0050    33.75 Mbps
+
+SCMA evaluation : Standalone SCMA experiment preserved; hybrid schedule may select SCMA per slot
+
+
+1. FINAL SUMMARY
+
+GNN benchmark rate : 17.69 Mbps
+Reference rate : 17.59 Mbps
+Average user rate : 1.77 Mbps
+Fairness : 0.529
+Outage : 10.00%
+
+Classical regression models evaluated (cross-validation) : Linear Regression, Ridge Regression, Lasso Regression, Decision Tree, Random Forest
+GNN model evaluated : Proposed GNN-Based NOMA
+Pairing methods : Random, Near-Far, Greedy, Optimization, GNN
+Communication methods : OMA, PD-NOMA, SCMA
+
+Result:
+GNN was trained to learn user-pairing patterns
+from wireless network data.
+
+Note:
+The GNN slot-preference head drives the final slot assignment through deterministic conflict resolution and slot-capacity checks.
+
+PD-NOMA and SCMA are integrated in the hybrid scheduler: each allocation chooses the feasible communication mode that best matches the slot conditions.
+
+Results saved successfully.
+====================================================

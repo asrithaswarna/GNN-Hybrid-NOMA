@@ -1,0 +1,2 @@
+difference_direction,observed_difference_mae_mbps,ci_lower_mae_mbps,ci_upper_mae_mbps,ci_includes_zero,independent_test_units,bootstrap_repetitions,resampling_unit,limitation
+MAE_baseline - MAE_selected,0.947442814436387,0.8622662485017771,1.0329214055402072,False,50,2000,scenario,

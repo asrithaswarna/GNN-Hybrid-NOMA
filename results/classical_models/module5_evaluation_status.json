@@ -1,0 +1,18 @@
+{
+  "status": "completed",
+  "cv_strategy": "GroupKFold",
+  "folds": 5,
+  "training_scenarios": 200,
+  "selected_model": "Random Forest",
+  "best_params": {
+    "model__n_estimators": 25,
+    "model__min_samples_split": 2,
+    "model__min_samples_leaf": 1,
+    "model__max_depth": 16
+  },
+  "configurations_tested": 4,
+  "best_cv_score_neg_mae": -0.014181371837806957,
+  "best_cv_mae_mbps": 0.014181371837806957,
+  "test_metrics_file": "model_selection_test_metrics.csv",
+  "bootstrap_file": "paired_bootstrap_comparison.csv"
+}

@@ -1,0 +1,58 @@
+============================================================
+HYBRID NOMA NETWORK SIMULATION
+============================================================
+Number of users       : 6
+Number of slots       : 3
+Model                 : Graph Neural Network (GNN)
+Random seed           : 42
+
+------------------------------------------------------------
+USER PAIRING RESULTS
+------------------------------------------------------------
+Pair 1: U1 and U4
+Assigned slot         : S1
+Method                : PD-NOMA
+Weak / strong user    : U1 / U4
+Pair data rate        : 10.53 Mbps
+
+Pair 2: U2 and U5
+Assigned slot         : S2
+Method                : PD-NOMA
+Weak / strong user    : U2 / U5
+Pair data rate        : 0.47 Mbps
+
+Pair 3: U0 and U3
+Assigned slot         : S3
+Method                : PD-NOMA
+Weak / strong user    : U0 / U3
+Pair data rate        : 1.31 Mbps
+
+------------------------------------------------------------
+PERFORMANCE RESULTS
+------------------------------------------------------------
+Total data rate       : 12.30 Mbps
+Average user rate     : 2.05 Mbps
+Fairness              : 0.3466
+Outage percentage     : 0.00 %
+
+------------------------------------------------------------
+BASELINE COMPARISON
+------------------------------------------------------------
+Method                          Total Data Rate (Mbps)
+------------------------------------------------------------
+Orthogonal Multiple Access (OMA)            17.73
+Random Pairing PD-NOMA                      17.04
+Near-Far Channel Gain NOMA                  17.03
+Greedy Sum-Rate NOMA                        16.72
+Optimization Oracle                         17.58
+Proposed GNN-Based NOMA                     16.79
+
+------------------------------------------------------------
+SIMPLE INTERPRETATION
+------------------------------------------------------------
+The GNN uses the network graph to estimate which users should be paired.
+The selected pairs are then assigned to available slots and evaluated.
+PD-NOMA is used for the main pair-based scheduling path in this project.
+SCMA is evaluated as a separate detector experiment in the current workflow.
+This output is intended to be easy to read for students, examiners, and project reviewers.
+============================================================

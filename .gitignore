@@ -1,0 +1,40 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+.venv312/
+venv/
+env/
+
+# Pytest cache
+.pytest_cache/
+test-output/
+
+# Jupyter cache
+.ipynb_checkpoints/
+
+# IDE settings
+.vscode/
+.idea/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+
+# Local secrets
+.env
+
+# Model checkpoints
+*.pt
+*.pth

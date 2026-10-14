@@ -1,0 +1,59 @@
+# Hybrid NOMA GNN Project Configuration
+
+system:
+  seed: 42
+  device: "cpu"  # "cuda" if GPU is available, else "cpu"
+  output_dir: "results"
+
+network:
+  num_users: 10                   # Default number of active users per cell
+  cell_radius_min: 20.0           # Minimum distance from BS in meters (inner deadzone)
+  cell_radius_max: 500.0          # Cell radius in meters
+  carrier_frequency: 2.4e9        # Carrier frequency in Hz (2.4 GHz)
+  total_bandwidth: 10.0e6         # Total system bandwidth in Hz (10 MHz)
+  num_slots: 5                    # Number of orthogonal time/frequency resource slots
+  total_transmit_power_w: 1.0     # Total BS transmit power in Watts (30 dBm)
+  noise_spectral_density_dbm: -174.0 # Thermal noise power spectral density in dBm/Hz
+  noise_figure_db: 5.0            # Receiver noise figure in dB
+
+channel:
+  path_loss_exponent: 3.5         # Path loss exponent (urban microcell)
+  reference_distance: 1.0         # Reference distance d0 in meters
+  reference_path_loss_db: 38.4    # Free-space path loss at d0 (dB)
+  fading_type: "rayleigh"         # Small-scale fading: "rayleigh"
+  fading_variance: 1.0            # Variance of complex Gaussian fading
+
+noma_pd:
+  alpha_weak: 0.75                # Power allocation coefficient for weak user
+  alpha_strong: 0.25              # Power allocation coefficient for strong user
+  sic_residual_factor: 0.01       # Beta: Imperfect SIC residual interference factor (0 = perfect SIC)
+  gain_ratio_threshold: 1.5       # Minimum channel gain ratio |h_strong|^2 / |h_weak|^2 to qualify for PD-NOMA
+
+noma_scma:
+  num_layers: 6                   # J: Number of users/layers multiplexed
+  num_resources: 4                # K: Number of orthogonal resource elements
+  codebook_size: 4                # M: Constellation cardinality per layer (4-point codebook)
+  mpa_iterations: 4               # Message Passing Algorithm detector iterations
+  degrees_per_user: 2             # d_v: Non-zero resources per user
+  degrees_per_resource: 3         # d_f: Colliding users per resource
+
+optimization:
+  oracle_method: "exhaustive"     # "exhaustive" for small N (<=10), "hungarian" or "greedy" for larger N
+  fairness_weight: 0.2            # Lambda weight for Jain's fairness in utility objective
+  min_rate_threshold_bps: 1.0e5   # QoS minimum rate threshold (100 kbps)
+
+gnn:
+  node_in_features: 6             # [x, y, distance, gain_db, normalized_gain, target_rate]
+  edge_in_features: 4             # [distance, gain_ratio, channel_corr, interference_pot]
+  hidden_dim: 64                  # Hidden feature dimension in message passing
+  num_layers: 3                   # Number of graph convolution layers
+  dropout: 0.1                    # Dropout probability
+  learning_rate: 0.001            # Adam optimizer initial learning rate
+  weight_decay: 1.0e-4            # L2 regularization
+  epochs: 50                      # Number of training epochs
+  batch_size: 16                  # Batch size of graphs
+
+dataset:
+  num_train_samples: 200          # Number of synthetic channel topology instances for training
+  num_val_samples: 40             # Validation topology instances
+  num_test_samples: 50            # Evaluation test topology instances

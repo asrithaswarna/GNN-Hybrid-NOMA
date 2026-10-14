@@ -1,0 +1,9 @@
+{
+  "data_source": "synthetic",
+  "dataset_path": "",
+  "task": "user rate regression",
+  "train_scenarios": 174,
+  "validation_scenarios": 58,
+  "test_scenarios": 58,
+  "seed": 42
+}
