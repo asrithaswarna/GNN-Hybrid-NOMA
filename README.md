@@ -1,4 +1,4 @@
-# Hybrid GNN–NOMA for User Assignment and Slot Pairing
+# Graph Neural Network-Based Dynamic User Pairing and Slot Assignment for Hybrid NOMA Networks
 
 This project simulates a wireless cell and trains an edge-conditioned Graph Neural Network (GNN) to predict user pairing affinities and resource-slot preferences. A constraint-aware scheduler turns those predictions into a valid hybrid multiple-access schedule using PD-NOMA, SCMA, and OMA fallback. Classical regressors predict per-user simulation-derived rates; they do not replace the GNN scheduler.
 
@@ -17,7 +17,7 @@ This project simulates a wireless cell and trains an edge-conditioned Graph Neur
 - Classical Linear, Ridge, Lasso, Decision Tree, and Random Forest regression for simulated per-user rate.
 - Optional K-means/DBSCAN/PCA analysis and a local FastAPI prediction service.
 
-## Module 5: Evaluation, Selection, and Calibration
+##  Evaluation, Selection, and Calibration
 
 The classical comparison workflow is `python main.py --mode compare`. It uses a train/validation/test split at the scenario level and:
 
@@ -28,9 +28,8 @@ The classical comparison workflow is `python main.py --mode compare`. It uses a 
 When there are fewer than two training scenarios, Module 5 CV/tuning is skipped and a status file explains why; the original model comparison is still produced. Missing scenario IDs force row-wise K-fold or bootstrap with explicit warnings because scenario independence cannot be guaranteed.
 The default `train` workflow also runs this classical Module 5 comparison for the presentation summary; `--bootstrap-repetitions` controls its bootstrap count as well. The standalone `compare` workflow runs the same classical evaluation without GNN training.
 
-## Project Structure
+## Project Structure(source code)
 
-```text
 .
 ├── main.py                       # train/evaluate/compare/clustering/inference/retrain CLI
 ├── config.yaml                   # network, channel, NOMA, GNN, and dataset configuration
@@ -65,7 +64,7 @@ The default `train` workflow also runs this classical Module 5 comparison for th
 │   └── hybrid_noma_experiment.ipynb
 ├── archive/                       # legacy experiment results and logs
 └── results*/                      # checked-in/prior results and local experiment outputs
-```
+
 
 ## Prerequisites and Installation
 
