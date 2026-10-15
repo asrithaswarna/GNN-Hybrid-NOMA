@@ -1,0 +1,664 @@
+{
+  "title": "Hybrid GNN-Based NOMA synthetic scenario dataset reconstruction",
+  "provenance": {
+    "type": "synthetic simulation",
+    "measured_or_external_data": false,
+    "reconstruction_notice": "The project does not retain the historical raw NumPy-generated scenarios. This artifact reproduces the documented simulation distributions, configured parameters, split counts, seed offsets, graph features and exhaustive-oracle labeling rules using Python's standard-library random generator. Because its random number generator differs from NumPy default_rng, the generated numeric samples are not byte-for-byte the samples used in any previous run."
+  },
+  "configuration": {
+    "base_seed": 42,
+    "users_per_scenario": 10,
+    "slots": 5,
+    "carrier_frequency_hz_configured": 2400000000.0,
+    "cell_radius_min_m": 20.0,
+    "cell_radius_max_m": 500.0,
+    "total_bandwidth_hz": 10000000.0,
+    "total_power_w": 1.0,
+    "noise_density_dbm_hz": -174.0,
+    "noise_figure_db": 5.0,
+    "path_loss_exponent": 3.5,
+    "reference_distance_m": 1.0,
+    "reference_path_loss_db": 38.4,
+    "fading": "independent complex Gaussian Rayleigh; variance 1",
+    "minimum_rate_requirement_bps": 100000.0,
+    "noma_alpha_weak": 0.75,
+    "noma_alpha_strong": 0.25,
+    "sic_residual_factor": 0.01,
+    "fairness_weight": 0.2,
+    "oracle": "exhaustive perfect pair partitions; slot order follows pair enumeration"
+  },
+  "splits": {
+    "train": {
+      "scenarios": 200,
+      "users": 2000,
+      "seed_min": 142,
+      "seed_max": 341,
+      "seed_rule": "base_seed + offset + index"
+    },
+    "validation": {
+      "scenarios": 40,
+      "users": 400,
+      "seed_min": 542,
+      "seed_max": 581,
+      "seed_rule": "base_seed + offset + index"
+    },
+    "benchmark": {
+      "scenarios": 50,
+      "users": 500,
+      "seed_min": 1000,
+      "seed_max": 1049,
+      "seed_rule": "benchmark seed_offset + index"
+    }
+  },
+  "split_independence": "Scenario seeds are disjoint across train, validation, and benchmark sets.",
+  "node_features": [
+    "node_x_norm",
+    "node_y_norm",
+    "node_distance_norm",
+    "node_gain_db_zscore",
+    "node_gain_relative_mean",
+    "node_min_rate_mbps"
+  ],
+  "edge_features": [
+    "edge_distance_norm",
+    "edge_gain_disparity_norm",
+    "edge_channel_correlation",
+    "edge_interference_potential"
+  ],
+  "eda_features": [
+    "x_m",
+    "y_m",
+    "distance_m",
+    "channel_gain_linear",
+    "channel_gain_db",
+    "snr_db",
+    "min_rate_req_bps"
+  ],
+  "feature_statistics_all_user_rows": {
+    "x_m": {
+      "count": 2900,
+      "missing": 0,
+      "mean": 4.499063231972923,
+      "std_population": 249.49636186627896,
+      "min": -498.9086004213749,
+      "q1": -198.3137535967623,
+      "median": 9.485069498430988,
+      "q3": 203.81694418334186,
+      "max": 497.79231969699265
+    },
+    "y_m": {
+      "count": 2900,
+      "missing": 0,
+      "mean": 1.7017031634474262,
+      "std_population": 255.15299400588427,
+      "min": -497.4586815832793,
+      "q1": -210.40519478705636,
+      "median": 10.293208819709548,
+      "q3": 212.56650605897215,
+      "max": 497.79432845158954
+    },
+    "distance_m": {
+      "count": 2900,
+      "missing": 0,
+      "mean": 337.48484423109556,
+      "std_population": 116.09738245374429,
+      "min": 21.267865189095694,
+      "q1": 257.77910805695456,
+      "median": 357.45342755742706,
+      "q3": 434.928002459907,
+      "max": 499.676304285081
+    },
+    "channel_gain_linear": {
+      "count": 2900,
+      "missing": 0,
+      "mean": 1.3861562380595624e-11,
+      "std_population": 1.934699142521031e-10,
+      "min": 2.6279813039421705e-18,
+      "q1": 4.465232172063577e-14,
+      "median": 1.2934778420841725e-13,
+      "q3": 4.53818824148494e-13,
+      "max": 5.406568575379153e-09
+    },
+    "channel_gain_db": {
+      "count": 2900,
+      "missing": 0,
+      "mean": -127.97188650585605,
+      "std_population": 9.306133241883149,
+      "min": -175.8037772877117,
+      "q1": -133.50156292858685,
+      "median": -128.88241087090393,
+      "q3": -123.43117742580058,
+      "max": -82.67078284170914
+    },
+    "snr_db": {
+      "count": 2900,
+      "missing": 0,
+      "mean": 1.0281134941439491,
+      "std_population": 9.306133241883149,
+      "min": -46.80377728771174,
+      "q1": -4.501562928586877,
+      "median": 0.11758912909608182,
+      "q3": 5.568822574199396,
+      "max": 46.32921715829085
+    },
+    "min_rate_req_bps": {
+      "count": 2900,
+      "missing": 0,
+      "mean": 100000.0,
+      "std_population": 0.0,
+      "min": 100000.0,
+      "q1": 100000.0,
+      "median": 100000.0,
+      "q3": 100000.0,
+      "max": 100000.0
+    }
+  },
+  "split_feature_statistics": {
+    "train": {
+      "x_m": {
+        "count": 2000,
+        "missing": 0,
+        "mean": 5.830607344634703,
+        "std_population": 250.273233757736,
+        "min": -498.9086004213749,
+        "q1": -198.84177673023504,
+        "median": 14.985380068495964,
+        "q3": 205.72489522551425,
+        "max": 492.5638317449619
+      },
+      "y_m": {
+        "count": 2000,
+        "missing": 0,
+        "mean": 5.722005710635666,
+        "std_population": 254.67373599914868,
+        "min": -497.2910687181704,
+        "q1": -199.75239836806108,
+        "median": 11.535898831809654,
+        "q3": 216.96889998058904,
+        "max": 491.7364440047593
+      },
+      "distance_m": {
+        "count": 2000,
+        "missing": 0,
+        "mean": 337.8461298047671,
+        "std_population": 115.85393066538042,
+        "min": 21.267865189095694,
+        "q1": 257.6568855381472,
+        "median": 360.1848804484324,
+        "q3": 434.10379610386826,
+        "max": 499.56560803585336
+      },
+      "channel_gain_linear": {
+        "count": 2000,
+        "missing": 0,
+        "mean": 1.3782509790059206e-11,
+        "std_population": 1.9793782096081753e-10,
+        "min": 2.6279813039421705e-18,
+        "q1": 4.4276818060191343e-14,
+        "median": 1.294555915512917e-13,
+        "q3": 4.525707820870135e-13,
+        "max": 5.406568575379153e-09
+      },
+      "channel_gain_db": {
+        "count": 2000,
+        "missing": 0,
+        "mean": -127.98339081628343,
+        "std_population": 9.212217135314077,
+        "min": -175.8037772877117,
+        "q1": -133.53823749100462,
+        "median": -128.8787919734938,
+        "q3": -123.44313817937766,
+        "max": -82.67078284170914
+      },
+      "snr_db": {
+        "count": 2000,
+        "missing": 0,
+        "mean": 1.0166091837165607,
+        "std_population": 9.212217135314077,
+        "min": -46.80377728771174,
+        "q1": -4.53823749100465,
+        "median": 0.12120802650618621,
+        "q3": 5.556861820622333,
+        "max": 46.32921715829085
+      },
+      "min_rate_req_bps": {
+        "count": 2000,
+        "missing": 0,
+        "mean": 100000.0,
+        "std_population": 0.0,
+        "min": 100000.0,
+        "q1": 100000.0,
+        "median": 100000.0,
+        "q3": 100000.0,
+        "max": 100000.0
+      }
+    },
+    "validation": {
+      "x_m": {
+        "count": 400,
+        "missing": 0,
+        "mean": 2.975868221331631,
+        "std_population": 253.6667385878438,
+        "min": -496.49719546434056,
+        "q1": -199.09833589179806,
+        "median": 7.228944042596783,
+        "q3": 195.1035618923821,
+        "max": 497.79231969699265
+      },
+      "y_m": {
+        "count": 400,
+        "missing": 0,
+        "mean": -18.100393174387158,
+        "std_population": 254.780042569083,
+        "min": -484.3868891838435,
+        "q1": -246.06159581133156,
+        "median": -10.465521056134268,
+        "q3": 188.78416972273516,
+        "max": 488.47305308778806
+      },
+      "distance_m": {
+        "count": 400,
+        "missing": 0,
+        "mean": 339.5007993051306,
+        "std_population": 119.73041239890877,
+        "min": 29.919957131965965,
+        "q1": 261.2051178528805,
+        "median": 356.9432969665645,
+        "q3": 440.19401105521536,
+        "max": 499.676304285081
+      },
+      "channel_gain_linear": {
+        "count": 400,
+        "missing": 0,
+        "mean": 8.065095335924516e-12,
+        "std_population": 7.242959135088587e-11,
+        "min": 1.7086289182728464e-16,
+        "q1": 4.5488998108338276e-14,
+        "median": 1.2133569629484857e-13,
+        "q3": 4.2636846512453993e-13,
+        "max": 1.096725906987998e-09
+      },
+      "channel_gain_db": {
+        "count": 400,
+        "missing": 0,
+        "mean": -128.1592144746128,
+        "std_population": 9.512753200285008,
+        "min": -157.67352247545782,
+        "q1": -133.42094455833842,
+        "median": -129.1601263418855,
+        "q3": -123.70215219444702,
+        "max": -89.59901897453763
+      },
+      "snr_db": {
+        "count": 400,
+        "missing": 0,
+        "mean": 0.8407855253871942,
+        "std_population": 9.51275320028501,
+        "min": -28.67352247545783,
+        "q1": -4.420944558338423,
+        "median": -0.16012634188550517,
+        "q3": 5.297847805552971,
+        "max": 39.40098102546236
+      },
+      "min_rate_req_bps": {
+        "count": 400,
+        "missing": 0,
+        "mean": 100000.0,
+        "std_population": 0.0,
+        "min": 100000.0,
+        "q1": 100000.0,
+        "median": 100000.0,
+        "q3": 100000.0,
+        "max": 100000.0
+      }
+    },
+    "benchmark": {
+      "x_m": {
+        "count": 500,
+        "missing": 0,
+        "mean": 0.3914427898388368,
+        "std_population": 242.8803869238444,
+        "min": -482.5385564201484,
+        "q1": -192.29579948986566,
+        "median": 0.1765740022296522,
+        "q3": 198.63438789138849,
+        "max": 492.2392979933698
+      },
+      "y_m": {
+        "count": 500,
+        "missing": 0,
+        "mean": 1.462170044962134,
+        "std_population": 256.62061804307797,
+        "min": -497.4586815832793,
+        "q1": -210.24808162242206,
+        "median": 14.07122429722654,
+        "q3": 212.43774870808343,
+        "max": 497.79432845158954
+      },
+      "distance_m": {
+        "count": 500,
+        "missing": 0,
+        "mean": 334.4269378771814,
+        "std_population": 114.04358091483114,
+        "min": 22.678996284986646,
+        "q1": 257.6017952666399,
+        "median": 345.21328164495446,
+        "q3": 433.08766541739584,
+        "max": 499.5940948135764
+      },
+      "channel_gain_linear": {
+        "count": 500,
+        "missing": 0,
+        "mean": 1.8814946378478172e-11,
+        "std_population": 2.369213458433899e-10,
+        "min": 1.4180116072119774e-16,
+        "q1": 4.479497211848204e-14,
+        "median": 1.4217614391442214e-13,
+        "q3": 5.042107505122085e-13,
+        "max": 3.880492283246804e-09
+      },
+      "channel_gain_db": {
+        "count": 500,
+        "missing": 0,
+        "mean": -127.77600688914107,
+        "std_population": 9.507004981772898,
+        "min": -158.48320214197042,
+        "q1": -133.48772796520035,
+        "median": -128.47205172942643,
+        "q3": -122.97388574606518,
+        "max": -84.11113175865621
+      },
+      "snr_db": {
+        "count": 500,
+        "missing": 0,
+        "mean": 1.2239931108589075,
+        "std_population": 9.507004981772898,
+        "min": -29.483202141970434,
+        "q1": -4.487727965200376,
+        "median": 0.5279482705735741,
+        "q3": 6.026114253934795,
+        "max": 44.888868241343765
+      },
+      "min_rate_req_bps": {
+        "count": 500,
+        "missing": 0,
+        "mean": 100000.0,
+        "std_population": 0.0,
+        "min": 100000.0,
+        "q1": 100000.0,
+        "median": 100000.0,
+        "q3": 100000.0,
+        "max": 100000.0
+      }
+    }
+  },
+  "scenario_metric_statistics": {
+    "train": {
+      "oracle_sum_rate_mbps": {
+        "count": 200,
+        "missing": 0,
+        "mean": 20.217471160544346,
+        "std_population": 7.31595535846074,
+        "min": 6.418765459011219,
+        "q1": 14.27922718382975,
+        "median": 19.550148695686815,
+        "q3": 25.29027056720493,
+        "max": 43.3118750518928
+      },
+      "oracle_jains_fairness": {
+        "count": 200,
+        "missing": 0,
+        "mean": 0.5264718363375291,
+        "std_population": 0.10985647007151855,
+        "min": 0.25494549554228935,
+        "q1": 0.45898279081839155,
+        "median": 0.5396111362291804,
+        "q3": 0.5932546841736851,
+        "max": 0.7581480614602861
+      },
+      "oracle_outage_users": {
+        "count": 200,
+        "missing": 0,
+        "mean": 0.52,
+        "std_population": 0.8482924024179398,
+        "min": 0.0,
+        "q1": 0.0,
+        "median": 0.0,
+        "q3": 1.0,
+        "max": 4.0
+      }
+    },
+    "validation": {
+      "oracle_sum_rate_mbps": {
+        "count": 40,
+        "missing": 0,
+        "mean": 20.164975182855173,
+        "std_population": 5.770852172319388,
+        "min": 8.245117604947461,
+        "q1": 15.727337091894361,
+        "median": 20.553783956544205,
+        "q3": 23.90859758350918,
+        "max": 32.87036485983983
+      },
+      "oracle_jains_fairness": {
+        "count": 40,
+        "missing": 0,
+        "mean": 0.502818419627211,
+        "std_population": 0.10032150451517326,
+        "min": 0.31001092328709745,
+        "q1": 0.4475275620744662,
+        "median": 0.47327165618823624,
+        "q3": 0.570104748444047,
+        "max": 0.7372863264701821
+      },
+      "oracle_outage_users": {
+        "count": 40,
+        "missing": 0,
+        "mean": 0.6,
+        "std_population": 0.8888194417315589,
+        "min": 0.0,
+        "q1": 0.0,
+        "median": 0.0,
+        "q3": 2.0,
+        "max": 2.0
+      }
+    },
+    "benchmark": {
+      "oracle_sum_rate_mbps": {
+        "count": 50,
+        "missing": 0,
+        "mean": 21.153339503203448,
+        "std_population": 7.463980958670528,
+        "min": 7.6156698089308605,
+        "q1": 15.66321164874804,
+        "median": 20.502454585209275,
+        "q3": 26.42170019176853,
+        "max": 45.5790214169875
+      },
+      "oracle_jains_fairness": {
+        "count": 50,
+        "missing": 0,
+        "mean": 0.526898687562199,
+        "std_population": 0.11643451225790172,
+        "min": 0.26396246061092205,
+        "q1": 0.4419096990432127,
+        "median": 0.5392740480918292,
+        "q3": 0.6003054760159922,
+        "max": 0.7524719773509572
+      },
+      "oracle_outage_users": {
+        "count": 50,
+        "missing": 0,
+        "mean": 0.58,
+        "std_population": 0.8964373932405988,
+        "min": 0.0,
+        "q1": 0.0,
+        "median": 0.0,
+        "q3": 1.0,
+        "max": 3.0
+      }
+    }
+  },
+  "iqr_outlier_flags": {
+    "x_m": {
+      "iqr_lower_fence": -801.5098002669185,
+      "iqr_upper_fence": 807.0129908534981,
+      "count_outside_fences": 0,
+      "interpretation": "flag for inspection; not automatically invalid"
+    },
+    "y_m": {
+      "iqr_lower_fence": -844.8627460560992,
+      "iqr_upper_fence": 847.024057328015,
+      "count_outside_fences": 0,
+      "interpretation": "flag for inspection; not automatically invalid"
+    },
+    "distance_m": {
+      "iqr_lower_fence": -7.944233547474141,
+      "iqr_upper_fence": 700.6513440643357,
+      "count_outside_fences": 0,
+      "interpretation": "flag for inspection; not automatically invalid"
+    },
+    "channel_gain_linear": {
+      "iqr_lower_fence": -5.690974319211516e-13,
+      "iqr_upper_fence": 1.0675685777902814e-12,
+      "count_outside_fences": 420,
+      "interpretation": "flag for inspection; not automatically invalid"
+    },
+    "channel_gain_db": {
+      "iqr_lower_fence": -148.60714118276624,
+      "iqr_upper_fence": -108.32559917162118,
+      "count_outside_fences": 134,
+      "interpretation": "flag for inspection; not automatically invalid"
+    },
+    "snr_db": {
+      "iqr_lower_fence": -19.607141182766284,
+      "iqr_upper_fence": 20.674400828378808,
+      "count_outside_fences": 134,
+      "interpretation": "flag for inspection; not automatically invalid"
+    },
+    "min_rate_req_bps": {
+      "iqr_lower_fence": 100000.0,
+      "iqr_upper_fence": 100000.0,
+      "count_outside_fences": 0,
+      "interpretation": "flag for inspection; not automatically invalid"
+    }
+  },
+  "correlation_features": [
+    "x_m",
+    "y_m",
+    "distance_m",
+    "channel_gain_db",
+    "snr_db"
+  ],
+  "correlation_matrix": [
+    {
+      "feature": "x_m",
+      "x_m": 1.0,
+      "y_m": 0.021313165781116934,
+      "distance_m": 0.014176221213113844,
+      "channel_gain_db": 0.008720598145058357,
+      "snr_db": 0.008720598145058352
+    },
+    {
+      "feature": "y_m",
+      "x_m": 0.021313165781116934,
+      "y_m": 0.9999999999999999,
+      "distance_m": 0.0045522473236700445,
+      "channel_gain_db": -0.008113502683904513,
+      "snr_db": -0.008113502683904532
+    },
+    {
+      "feature": "distance_m",
+      "x_m": 0.014176221213113844,
+      "y_m": 0.0045522473236700445,
+      "distance_m": 0.9999999999999999,
+      "channel_gain_db": -0.7518940407437286,
+      "snr_db": -0.7518940407437286
+    },
+    {
+      "feature": "channel_gain_db",
+      "x_m": 0.008720598145058357,
+      "y_m": -0.008113502683904513,
+      "distance_m": -0.7518940407437286,
+      "channel_gain_db": 1.0,
+      "snr_db": 1.0
+    },
+    {
+      "feature": "snr_db",
+      "x_m": 0.008720598145058352,
+      "y_m": -0.008113502683904532,
+      "distance_m": -0.7518940407437286,
+      "channel_gain_db": 1.0,
+      "snr_db": 1.0
+    }
+  ],
+  "labels": {
+    "pair_labels": {
+      "graphs": 290,
+      "users": 2900,
+      "directed_non_self_edges": 26100,
+      "positive_directed_edges": 2900,
+      "negative_directed_edges": 23200,
+      "positive_edge_fraction": 0.1111111111111111,
+      "unique_pairs_per_graph": 5
+    },
+    "slot_label_user_counts": {
+      "0": 580,
+      "1": 580,
+      "2": 580,
+      "3": 580,
+      "4": 580
+    },
+    "oracle_communication_mode_user_counts": {
+      "PD-NOMA": 2598,
+      "SCMA": 302
+    },
+    "rate_regression_target_outage_rows": 78
+  },
+  "data_quality": {
+    "user_rows": 2900,
+    "scenario_count": 290,
+    "duplicate_scenario_user_keys": 0,
+    "missing_numeric_values": {
+      "x_m": 0,
+      "y_m": 0,
+      "distance_m": 0,
+      "channel_gain_linear": 0,
+      "channel_gain_db": 0,
+      "snr_db": 0,
+      "min_rate_req_bps": 0,
+      "node_x_norm": 0,
+      "node_y_norm": 0,
+      "node_distance_norm": 0,
+      "node_gain_db_zscore": 0,
+      "node_gain_relative_mean": 0,
+      "node_min_rate_mbps": 0,
+      "rate_target_bps": 0,
+      "oracle_slot_id": 0
+    },
+    "non_finite_numeric_values": {
+      "x_m": 0,
+      "y_m": 0,
+      "distance_m": 0,
+      "channel_gain_linear": 0,
+      "channel_gain_db": 0,
+      "snr_db": 0,
+      "min_rate_req_bps": 0,
+      "node_x_norm": 0,
+      "node_y_norm": 0,
+      "node_distance_norm": 0,
+      "node_gain_db_zscore": 0,
+      "node_gain_relative_mean": 0,
+      "node_min_rate_mbps": 0,
+      "rate_target_bps": 0,
+      "oracle_slot_id": 0
+    },
+    "distance_range_valid": true,
+    "coordinate_distance_max_abs_error_m": 5.684341886080802e-14,
+    "slot_labels_in_range": true,
+    "pair_assignment_reciprocal": true,
+    "edge_channel_correlation_unique_values": [
+      1.0
+    ]
+  }
+}
