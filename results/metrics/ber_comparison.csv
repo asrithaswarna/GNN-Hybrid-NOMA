@@ -1,0 +1,37 @@
+snr_db,method,bit_errors,total_bits,ber
+-5.0,Orthogonal Multiple Access (OMA),15238,50000,0.30476
+-5.0,Random Pairing PD-NOMA,19553,50000,0.39106
+-5.0,Near-Far Channel Gain NOMA,19821,50000,0.39642
+-5.0,Greedy Sum-Rate NOMA,18863,50000,0.37726
+-5.0,Optimization Oracle,19132,50000,0.38264
+-5.0,Proposed GNN-Based NOMA,19090,50000,0.3818
+0.0,Orthogonal Multiple Access (OMA),11488,50000,0.22976
+0.0,Random Pairing PD-NOMA,16537,50000,0.33074
+0.0,Near-Far Channel Gain NOMA,16608,50000,0.33216
+0.0,Greedy Sum-Rate NOMA,15755,50000,0.3151
+0.0,Optimization Oracle,16058,50000,0.32116
+0.0,Proposed GNN-Based NOMA,15796,50000,0.31592
+5.0,Orthogonal Multiple Access (OMA),7765,50000,0.1553
+5.0,Random Pairing PD-NOMA,12378,50000,0.24756
+5.0,Near-Far Channel Gain NOMA,12361,50000,0.24722
+5.0,Greedy Sum-Rate NOMA,12109,50000,0.24218
+5.0,Optimization Oracle,12104,50000,0.24208
+5.0,Proposed GNN-Based NOMA,11922,50000,0.23844
+10.0,Orthogonal Multiple Access (OMA),4789,50000,0.09578
+10.0,Random Pairing PD-NOMA,8562,50000,0.17124
+10.0,Near-Far Channel Gain NOMA,8565,50000,0.1713
+10.0,Greedy Sum-Rate NOMA,8871,50000,0.17742
+10.0,Optimization Oracle,8755,50000,0.1751
+10.0,Proposed GNN-Based NOMA,8703,50000,0.17406
+15.0,Orthogonal Multiple Access (OMA),2685,50000,0.0537
+15.0,Random Pairing PD-NOMA,5315,50000,0.1063
+15.0,Near-Far Channel Gain NOMA,5221,50000,0.10442
+15.0,Greedy Sum-Rate NOMA,6073,50000,0.12146
+15.0,Optimization Oracle,5747,50000,0.11494
+15.0,Proposed GNN-Based NOMA,5933,50000,0.11866
+20.0,Orthogonal Multiple Access (OMA),1337,50000,0.02674
+20.0,Random Pairing PD-NOMA,3043,50000,0.06086
+20.0,Near-Far Channel Gain NOMA,2815,50000,0.0563
+20.0,Greedy Sum-Rate NOMA,3634,50000,0.07268
+20.0,Optimization Oracle,3265,50000,0.0653
+20.0,Proposed GNN-Based NOMA,3542,50000,0.07084

@@ -14,6 +14,7 @@ This project simulates a wireless cell and trains an edge-conditioned Graph Neur
 - Edge-conditioned GNN, oracle-supervised pairing/slot targets, and deterministic schedule constraint handling.
 - Hybrid PD-NOMA (with imperfect SIC), SCMA/MPA, and OMA fallback.
 - Wireless evaluation against OMA, Random, Near-Far, Greedy Sum-Rate, Optimization Oracle, and the GNN.
+- Outage probability comparison and a bit-level uncoded BPSK BER-versus-SNR comparison across the six pairing methods.
 - Classical Linear, Ridge, Lasso, Decision Tree, and Random Forest regression for simulated per-user rate.
 - Optional K-means/DBSCAN/PCA analysis and a local FastAPI prediction service.
 
@@ -41,7 +42,7 @@ The default `train` workflow also runs this classical Module 5 comparison for th
 │   ├── graph_builder.py          # graph features and supervised labels
 │   ├── gnn_model.py              # hybrid NOMA GNN
 │   ├── training.py               # synthetic graph generation and training
-│   ├── evaluation.py             # wireless benchmark and SCMA SNR sweep
+│   ├── evaluation.py             # wireless benchmark, SCMA sweep, and pairing-method BER sweep
 │   ├── classical_models.py       # regression, CV, tuning, bootstrap, inference
 │   ├── data_pipeline.py          # scenario CSV/synthetic data, splitting, features
 │   ├── optimization.py           # pairing optimization/oracle
@@ -128,6 +129,10 @@ python main.py --mode compare --data-source csv --dataset data/example_users.csv
 
 Other available modes are `clustering`, `inference`, and `retrain`. CLI options and defaults can be checked with `python main.py --help`. Seed controls are `--seed` and `system.seed` in `config.yaml`; the bootstrap repetition count is set with `--bootstrap-repetitions`. The fold cap (five) and search candidates (four per tuned model) are constants in `src/classical_models.py`.
 
+The standard `train` workflow and checkpoint-based `evaluate` workflow produce outage and BER comparison outputs. BER work per test scenario and SNR can be adjusted with `--ber-blocks` (default: 100).
+
+The BER comparison uses uncoded BPSK over common path-loss-plus-Rayleigh test channel scenarios with AWGN and perfect receiver CSI. OMA uses coherent detection on orthogonal transmissions. Paired methods use two-user PD-NOMA superposition, marginal-ML detection for the weak user, and hard successive interference cancellation for the strong user. This compares pairing policies under a shared OMA/PD-NOMA physical layer; it is **not** a BER evaluation of the hybrid scheduler's SCMA mode. The independent SCMA QPSK/MPA BER curve remains available as `scma_ber_curve.png`. See [limitations](./docs/limitations.md#35-pairing-method-ber-comparison) for assumptions and scope.
+
 ## Outputs
 
 The canonical full training run is stored in `results/`. Re-running a workflow may replace files
@@ -138,9 +143,12 @@ be retained. Standalone comparison and optional analysis outputs use named subdi
 `train` mode writes:
 
 - `best_gnn_model.pt`, `presentation_summary.txt`
-- `figures/network_topology.png`, `figures/training_loss_curves.png`, `figures/sum_rate_benchmark.png`, `figures/scma_ber_curve.png`
-- `metrics/benchmark_results.csv`, `metrics/summary.json`
+- `figures/network_topology.png`, `figures/training_loss_curves.png`, `figures/sum_rate_benchmark.png`
+- `figures/outage_comparison.png`, `figures/ber_comparison.png`, `figures/scma_ber_curve.png`
+- `metrics/benchmark_results.csv`, `metrics/ber_comparison.csv`, `metrics/summary.json`
 - `classical_models/classical_model_comparison.csv`, Module 5 CV/tuning/test/bootstrap CSVs, and fitted model artifacts
+
+`metrics/ber_comparison.csv` contains one row per SNR and supported method, including the observed bit errors, transmitted bit count, and computed BER. `outage_comparison.png` plots the benchmark evaluator's `outage_probability_mean` as a percentage; creating it does not rerun the benchmark.
 
 `compare` mode writes under `<output>/classical_models/`. The documented standalone command uses
 `results/module5_compare/`:
@@ -167,7 +175,7 @@ python -m pytest tests -v
 python -c "import main; import src.classical_models; import src.evaluation; print('imports OK')"
 ```
 
-The current full test suite passed (37 tests). Headless visualization environments may require a working Matplotlib non-interactive backend. If the scenario-aware comparison warns about too few groups, increase available independent scenarios in `config.yaml` or use a larger CSV dataset with distinct scenarios. The synthetic channel assumptions are not measured hardware results, and a small test-scenario bootstrap can have an unstable interval.
+The current full test suite passed (41 tests). Figures are rendered with Matplotlib's non-interactive Agg backend on Windows and headless systems. If the scenario-aware comparison warns about too few groups, increase available independent scenarios in `config.yaml` or use a larger CSV dataset with distinct scenarios. The synthetic channel assumptions are not measured hardware results, and a small test-scenario bootstrap can have an unstable interval.
 
 ## Documentation
 

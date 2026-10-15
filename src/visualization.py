@@ -11,11 +11,14 @@ from typing import List, Dict, Optional
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import matplotlib
 
-# Prefer a GUI backend on desktop machines so figures can visibly open after running.
-# Fall back to a non-interactive backend in headless environments such as servers or CI.
-if os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY") or platform.system() == "Windows":
+# Windows opens saved figures with the platform image viewer, so Matplotlib can
+# use Agg there without requiring a working Tcl/Tk installation.
+if platform.system() == "Windows":
+    matplotlib.use("Agg")
+elif os.environ.get("DISPLAY") or os.environ.get("WAYLAND_DISPLAY"):
     for backend in ("TkAgg", "QtAgg", "macosx", "WXAgg"):
         try:
             matplotlib.use(backend, force=True)
@@ -218,6 +221,131 @@ class Visualizer:
 
         out_path = self.output_dir / filename
         fig.savefig(out_path, dpi=300)
+        self._show_if_possible(fig, str(out_path))
+        return str(out_path)
+
+    def plot_outage_comparison(
+        self,
+        metrics: Dict[str, MethodBenchmarkMetrics],
+        filename: str = "outage_comparison.png",
+    ) -> str:
+        """Plots evaluator outage probabilities as percentages for available methods."""
+        method_labels = {
+            "Orthogonal Multiple Access (OMA)": "OMA",
+            "Random Pairing PD-NOMA": "Random Pairing\nPD-NOMA",
+            "Near-Far Channel Gain NOMA": "Near-Far Channel\nGain NOMA",
+            "Greedy Sum-Rate NOMA": "Greedy Sum-Rate\nNOMA",
+            "Optimization Oracle": "Optimization\nOracle",
+            "Proposed GNN-Based NOMA": "Proposed GNN-Based\nNOMA",
+        }
+        valid_methods = []
+        outage_percentages = []
+        for method in method_labels:
+            if method not in metrics:
+                continue
+            try:
+                probability = float(metrics[method].outage_probability_mean)
+            except (TypeError, ValueError, AttributeError):
+                print(f"Skipping outage plot value for '{method}': missing or invalid metric.")
+                continue
+            if not np.isfinite(probability) or not 0.0 <= probability <= 1.0:
+                print(f"Skipping outage plot value for '{method}': expected a probability in [0, 1].")
+                continue
+            valid_methods.append(method)
+            outage_percentages.append(probability * 100.0)
+
+        if not valid_methods:
+            raise ValueError("No valid outage_probability_mean values are available to plot")
+
+        labels = [method_labels[method] for method in valid_methods]
+        x = np.arange(len(labels))
+        fig, ax = plt.subplots(figsize=(11, 6))
+        bars = ax.bar(x, outage_percentages, color="#4c78a8", alpha=0.9, width=0.68)
+        ax.set_title("Outage Probability Comparison Across Benchmark Methods", fontweight="bold")
+        ax.set_xlabel("Communication Method")
+        ax.set_ylabel("Outage Probability (%)")
+        ax.set_xticks(x)
+        ax.set_xticklabels(labels, rotation=0, ha="center")
+        ax.set_ylim(0.0, max(5.0, max(outage_percentages, default=0.0) * 1.18))
+        ax.grid(True, axis="y", linestyle=":", alpha=0.65)
+        ax.set_axisbelow(True)
+        for bar, percentage in zip(bars, outage_percentages):
+            ax.annotate(
+                f"{percentage:.2f}%",
+                (bar.get_x() + bar.get_width() / 2.0, bar.get_height()),
+                xytext=(0, 4),
+                textcoords="offset points",
+                ha="center",
+                va="bottom",
+                fontsize=9,
+            )
+        fig.tight_layout()
+
+        out_path = self.output_dir / filename
+        fig.savefig(out_path, dpi=300, bbox_inches="tight")
+        self._show_if_possible(fig, str(out_path))
+        return str(out_path)
+
+    def plot_ber_comparison(
+        self,
+        results: pd.DataFrame,
+        filename: str = "ber_comparison.png",
+    ) -> str:
+        """Plots computed per-method BER against SNR on a logarithmic Y-axis."""
+        required_columns = {"snr_db", "method", "ber", "total_bits"}
+        missing_columns = required_columns - set(results.columns)
+        if missing_columns:
+            raise ValueError(f"BER results are missing required columns: {sorted(missing_columns)}")
+
+        frame = results.copy()
+        frame["snr_db"] = pd.to_numeric(frame["snr_db"], errors="coerce")
+        frame["ber"] = pd.to_numeric(frame["ber"], errors="coerce")
+        frame["total_bits"] = pd.to_numeric(frame["total_bits"], errors="coerce")
+        valid = (
+            np.isfinite(frame["snr_db"])
+            & np.isfinite(frame["ber"])
+            & (frame["ber"] >= 0.0)
+            & (frame["ber"] <= 1.0)
+            & np.isfinite(frame["total_bits"])
+            & (frame["total_bits"] > 0)
+            & frame["method"].notna()
+        )
+        invalid_count = int((~valid).sum())
+        if invalid_count:
+            print(f"Skipping {invalid_count} invalid BER result row(s) from the plot.")
+        frame = frame.loc[valid]
+        if frame.empty:
+            raise ValueError("No valid BER results are available to plot")
+
+        fig, ax = plt.subplots(figsize=(9, 6))
+        for method in dict.fromkeys(frame["method"].astype(str)):
+            method_frame = frame[frame["method"].astype(str) == method].sort_values("snr_db")
+            if method_frame.empty:
+                continue
+            # Zero observed errors are plotted at half the experiment's bit resolution.
+            plotted_ber = np.maximum(
+                method_frame["ber"].to_numpy(dtype=float),
+                0.5 / method_frame["total_bits"].to_numpy(dtype=float),
+            )
+            ax.semilogy(
+                method_frame["snr_db"],
+                plotted_ber,
+                marker="o",
+                linewidth=1.8,
+                markersize=5,
+                label=method,
+            )
+
+        ax.set_title("Uncoded BPSK BER vs. SNR by Pairing Method", fontweight="bold")
+        ax.set_xlabel("Normalized Average Received SNR (dB)")
+        ax.set_ylabel("Bit Error Rate (BER, logarithmic scale)")
+        ax.set_ylim(bottom=max(1e-7, float(frame["total_bits"].max()) ** -1 / 2.0), top=1.0)
+        ax.grid(True, which="both", linestyle=":", alpha=0.65)
+        ax.legend(loc="best", fontsize=8)
+        fig.tight_layout()
+
+        out_path = self.output_dir / filename
+        fig.savefig(out_path, dpi=300, bbox_inches="tight")
         self._show_if_possible(fig, str(out_path))
         return str(out_path)
 

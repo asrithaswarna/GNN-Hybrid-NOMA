@@ -57,6 +57,8 @@ def parse_args(args=None):
                         help="Classical model artifact for inference mode.")
     parser.add_argument("--bootstrap-repetitions", type=int, default=2000,
                         help="Paired scenario-bootstrap repetitions in compare mode (default: 2000).")
+    parser.add_argument("--ber-blocks", type=int, default=100,
+                        help="Uncoded BER transmission blocks per scenario and SNR (default: 100).")
     return parser.parse_args(args)
 
 
@@ -464,10 +466,28 @@ def _run_analysis_mode(args, cfg):
         device = get_device(cfg.system.device)
         model = HybridNOMAGNN(cfg=cfg.gnn, num_slots=cfg.network.num_slots).to(device)
         model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
-        metrics = NetworkEvaluator(cfg=cfg, gnn_model=model).evaluate_test_set(
+        evaluator = NetworkEvaluator(cfg=cfg, gnn_model=model)
+        metrics = evaluator.evaluate_test_set(
             num_test_instances=cfg.dataset.num_test_samples, seed_offset=1000
         )
         print(pd.DataFrame([value.__dict__ for value in metrics.values()]).to_string(index=False))
+        figures_dir = output_dir / "figures"
+        metrics_dir = output_dir / "metrics"
+        figures_dir.mkdir(parents=True, exist_ok=True)
+        metrics_dir.mkdir(parents=True, exist_ok=True)
+        visualizer = Visualizer(output_dir=str(figures_dir), show_plots=args.show_plots)
+        outage_path = visualizer.plot_outage_comparison(metrics)
+        ber_results = evaluator.evaluate_ber_snr_sweep(
+            num_test_instances=cfg.dataset.num_test_samples,
+            seed_offset=1000,
+            num_blocks=args.ber_blocks,
+        )
+        ber_csv_path = metrics_dir / "ber_comparison.csv"
+        save_dataframe_csv(ber_results, str(ber_csv_path))
+        ber_plot_path = visualizer.plot_ber_comparison(ber_results)
+        print(f"Saved outage comparison graph to: {outage_path}")
+        print(f"Saved BER comparison CSV to: {ber_csv_path}")
+        print(f"Saved BER comparison graph to: {ber_plot_path}")
         return
 
     if args.mode == "retrain":
@@ -589,6 +609,11 @@ def main():
     if detailed:
         print(f"Saved benchmark CSV to: {csv_path}")
 
+    outage_plot_path = visualizer.plot_outage_comparison(
+        benchmark_metrics, filename="outage_comparison.png"
+    )
+    print(f"Saved outage comparison graph to: {outage_plot_path}")
+
     # 5. SCMA MPA Detector Simulation
     if detailed:
         print("\n[Phase 4] Evaluating SCMA Message Passing Algorithm (MPA) Detector Across SNR...")
@@ -602,7 +627,23 @@ def main():
     if detailed:
         print(f"Saved SCMA BER curve to: {scma_plot_path}")
 
-    # 6. Generate Topology & Benchmark Plots
+    # 6. Bit-level comparison for pairing policies, independent of the SCMA MPA sweep.
+    print("Evaluating uncoded BPSK BER for the benchmark pairing methods...", flush=True)
+    ber_results = evaluator.evaluate_ber_snr_sweep(
+        num_blocks=args.ber_blocks,
+        num_test_instances=cfg.dataset.num_test_samples,
+        seed_offset=1000,
+        scenarios=csv_test_scenarios,
+    )
+    ber_csv_path = str(metrics_dir / "ber_comparison.csv")
+    save_dataframe_csv(ber_results, ber_csv_path)
+    ber_plot_path = visualizer.plot_ber_comparison(
+        ber_results, filename="ber_comparison.png"
+    )
+    print(f"Saved BER comparison CSV to: {ber_csv_path}")
+    print(f"Saved BER comparison graph to: {ber_plot_path}")
+
+    # 7. Generate Topology & Benchmark Plots
     if detailed:
         print("\n[Phase 5] Generating Publication Figures...")
     else:
